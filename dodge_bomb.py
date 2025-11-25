@@ -48,9 +48,12 @@ def main():
 
 
     while True:
-        for event in pg.event.get():
-            if event.type == pg.QUIT: 
+        for event in pg.event.get(): # イベント(ボタンを押すとか)処理
+            if event.type == pg.QUIT: # QUITイベント(×ボタンが押されたら)が発生したら終了
                 return
+        if kk_rct.colliderect(bb_rct): # こうかとんと爆弾が衝突したら
+            print("ゲームオーバー")
+            return # ゲーム終了
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
