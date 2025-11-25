@@ -1,7 +1,7 @@
 import os
+import random 
 import sys
-import time
-import random   
+import time  
 import pygame as pg
 
 
@@ -31,31 +31,35 @@ def check_bound(rct:pg.Rect)-> tuple[bool, bool]:
         tate = False
     return tate, yoko
 
+
 def gameover(screen: pg.Surface) -> None:
-    game_set = pg.Surface((WIDTH, HEIGHT))  # 1 画面サイズの Surface を作る
-    pg.draw.rect(game_set, (0, 0, 0), (0, 0, WIDTH, HEIGHT))  # 黒い矩形を描く
-    game_set.set_alpha(255) #2 surfaceの透明度を設定する。（55の時は完全に不透明状態）
-    game_set_fonto = pg.font.Font(None, 80) #3フォントのサイズを設定する。（第1引数 None は「システムのデフォルトフォント」を使うこと、第2引数 80 は文字サイズ（ピクセル）を表す）
-    txt = game_set_fonto.render("Gameover",True, (255, 255, 255)) #白文字でGame Overと書かれた
-    txt_rct = txt.get_rect(center=(WIDTH//2, HEIGHT//2)) #フォントを出力する場所をした。
+    game_set = pg.Surface((WIDTH, HEIGHT))  #1 画面サイズの Surface を作る
+    pg.draw.rect(game_set, (0, 0, 0), (0, 0, WIDTH, HEIGHT))  #黒い矩形を描く
+    game_set.set_alpha(255)  #2 surfaceの透明度を設定する。（55の時は完全に不透明状態）
+    game_set_fonto = pg.font.Font(None, 80)  #3フォントのサイズを設定する。（第1引数 None は「システムのデフォルトフォント」を使うこと、第2引数 80 は文字サイズ（ピクセル）を表す）
+    txt = game_set_fonto.render("Gameover",True, (255, 255, 255))  #白文字でGame Overと書かれた
+    txt_rct = txt.get_rect(center=(WIDTH//2, HEIGHT//2))  #フォントを出力する場所をした。
     game_set.blit(txt,txt_rct) 
-    game_set_bird = pg.image.load("fig/8.png") #4こうかとんの画像をロード
+    game_set_bird = pg.image.load("fig/8.png")  #4こうかとんの画像をロード
     bird_rct = game_set_bird.get_rect(center=(WIDTH//2 +200, HEIGHT//2)) #出力する場所
     bird_rct2 = game_set_bird.get_rect(center=(WIDTH//2 -200, HEIGHT//2)) #出力する場所
-    game_set.blit(game_set_bird,bird_rct) #5 こうかとんの画像と場所をblit
+    game_set.blit(game_set_bird,bird_rct)  #5 こうかとんの画像と場所をblit
     game_set.blit(game_set_bird,bird_rct2)
     screen.blit(game_set, [0,0])
-    pg.display.update() #6 画面を更新
-    time.sleep(5) #5秒まつ
+    pg.display.update()  #6 画面を更新
+    time.sleep(5)  #5秒まつ
 
 
-# def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
-#     for r in range(1, 11):
-#         bb_img = pg.Surface((20*r, 20*r))
-#         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
-#         bb_imgs.append(bb_img)
-#         bb_accs = [a for a in range(1, 11)]
-    
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    bb_imgs: pg.Surface = []
+    bb_accs: int = [acceleration for acceleration in range(1, 11)]  # 加速度段階（1〜10）
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_imgs.append(bb_img)
+        bb_accs = [a for a in range(1, 11)]
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
