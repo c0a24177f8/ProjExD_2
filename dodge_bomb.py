@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import random   
 import pygame as pg
 
@@ -30,6 +31,23 @@ def check_bound(rct:pg.Rect)-> tuple[bool, bool]:
         tate = False
     return tate, yoko
 
+def gameover(screen: pg.Surface) -> None:
+    game_set = pg.Surface((WIDTH, HEIGHT))  # 画面サイズの Surface を作る
+    pg.draw.rect(game_set, (0, 0, 0), (0, 0, WIDTH, HEIGHT))  # 黒い矩形を描く
+    game_set_fonto = pg.font.Font(None, 80)
+    txt = game_set_fonto.render("Gameover",True, (255, 255, 255))
+    game_set.set_alpha(255)
+    txt_rct = txt.get_rect(center=(WIDTH//2, HEIGHT//2))
+    game_set.blit(txt,txt_rct)
+    game_set_bird = pg.image.load("fig/8.png") 
+    bird_rct = game_set_bird.get_rect(center=(WIDTH//2 +200, HEIGHT//2))
+    bird_rct2 = game_set_bird.get_rect(center=(WIDTH//2 -200, HEIGHT//2))
+    game_set.blit(game_set_bird,bird_rct)
+    game_set.blit(game_set_bird,bird_rct2)
+    screen.blit(game_set, [0,0])
+    pg.display.update()
+    time.sleep(5)
+    
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -52,8 +70,9 @@ def main():
             if event.type == pg.QUIT: # QUITイベント(×ボタンが押されたら)が発生したら終了
                 return
         if kk_rct.colliderect(bb_rct): # こうかとんと爆弾が衝突したら
+            gameover(screen)
             print("ゲームオーバー")
-            return # ゲーム終了
+            return None# ゲーム終了
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
